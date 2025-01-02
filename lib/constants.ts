@@ -9,7 +9,6 @@ export const APP_SLOGAN =
 export const APP_DESCRIPTION =
   process.env.NEXT_PUBLIC_APP_DESCRIPTION ||
   'An Amazon clone built with Next.js and MongoDB';
-
 export const APP_COPYRIGHT =
   process.env.NEXT_PUBLIC_APP_COPYRIGHT ||
   `Copyright © 2025 ${APP_NAME}. All rights reserved.`;
@@ -29,12 +28,12 @@ export const AVAILABLE_PAYMENT_METHODS = [
   {
     name: 'Stripe',
     commission: 0,
-    isDefault: true,
+    isDefault: false,
   },
   {
     name: 'Cash On Delivery',
     commission: 0,
-    isDefault: true,
+    isDefault: false,
   },
 ];
 export const DEFAULT_PAYMENT_METHOD =
@@ -60,3 +59,5 @@ export const AVAILABLE_DELIVERY_DATES = [
     freeShippingMinPrice: 35,
   },
 ];
+
+export const USER_ROLES = ['Admin', 'User'];
