@@ -81,7 +81,6 @@ const useCartStore = create(
         }
         return foundItem.clientId;
       },
-
       updateItem: async (item: OrderItem, quantity: number) => {
         const { items, shippingAddress } = get().cart;
         const exist = items.find(
