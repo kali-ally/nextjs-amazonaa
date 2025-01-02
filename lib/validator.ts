@@ -14,8 +14,7 @@ const Price = (field: string) =>
       `${field} must have exactly two decimal places (e.g., 49.99)`
     );
 
-// Product
-
+// Review
 export const ReviewInputSchema = z.object({
   product: MongoId,
   user: MongoId,
@@ -64,6 +63,10 @@ export const ProductInputSchema = z.object({
     .nonnegative('Number of sales must be a non-negative number'),
 });
 
+export const ProductUpdateSchema = ProductInputSchema.extend({
+  _id: z.string(),
+});
+
 // Order Item
 export const OrderItemSchema = z.object({
   clientId: z.string().min(1, 'clientId is required'),
@@ -85,7 +88,6 @@ export const OrderItemSchema = z.object({
   color: z.string().optional(),
 });
 
-// Shipping Address
 export const ShippingAddressSchema = z.object({
   fullName: z.string().min(1, 'Full name is required'),
   street: z.string().min(1, 'Address is required'),
@@ -141,7 +143,6 @@ export const CartSchema = z.object({
     .array(OrderItemSchema)
     .min(1, 'Order must contain at least one item'),
   itemsPrice: z.number(),
-
   taxPrice: z.optional(z.number()),
   shippingPrice: z.optional(z.number()),
   totalPrice: z.number(),
@@ -159,6 +160,13 @@ const UserName = z
 const Email = z.string().min(1, 'Email is required').email('Email is invalid');
 const Password = z.string().min(3, 'Password must be at least 3 characters');
 const UserRole = z.string().min(1, 'role is required');
+
+export const UserUpdateSchema = z.object({
+  _id: MongoId,
+  name: UserName,
+  email: Email,
+  role: UserRole,
+});
 
 export const UserInputSchema = z.object({
   name: UserName,
@@ -193,4 +201,16 @@ export const UserSignUpSchema = UserSignInSchema.extend({
 });
 export const UserNameSchema = z.object({
   name: UserName,
+});
+
+// WEBPAGE
+export const WebPageInputSchema = z.object({
+  title: z.string().min(3, 'Title must be at least 3 characters'),
+  slug: z.string().min(3, 'Slug must be at least 3 characters'),
+  content: z.string().min(1, 'Content is required'),
+  isPublished: z.boolean(),
+});
+
+export const WebPageUpdateSchema = WebPageInputSchema.extend({
+  _id: z.string(),
 });
