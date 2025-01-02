@@ -71,7 +71,11 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
 @layer utilities {
+  .web-page-content p {
+    @apply py-2;
+  }
   .highlight-link a,
   a.highlight-link {
     @apply text-sky-700  hover:text-orange-700 hover:underline;
@@ -85,11 +89,10 @@ body {
   .h1-bold {
     @apply font-bold text-2xl lg:text-3xl;
   }
-}
-.h2-bold {
-  @apply font-bold text-lg lg:text-xl;
-}
-
-.flex-between {
-  @apply flex justify-between items-center;
+  .h2-bold {
+    @apply font-bold text-lg lg:text-xl;
+  }
+  .flex-between {
+    @apply flex justify-between items-center;
+  }
 }
