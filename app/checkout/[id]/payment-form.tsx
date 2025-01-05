@@ -18,9 +18,9 @@ import CheckoutFooter from '../checkout-footer';
 import { redirect, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import ProductPrice from '@/components/shared/product/product-price';
+import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import StripeForm from './stripe-form';
-import { loadStripe } from '@stripe/stripe-js';
 
 export default function OrderPaymentForm({
   order,
@@ -130,7 +130,6 @@ export default function OrderPaymentForm({
                 </PayPalScriptProvider>
               </div>
             )}
-
             {!isPaid && paymentMethod === 'Stripe' && clientSecret && (
               <Elements
                 options={{
