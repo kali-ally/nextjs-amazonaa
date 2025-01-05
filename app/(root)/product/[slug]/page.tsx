@@ -10,6 +10,7 @@ import ProductGallery from '@/components/shared/product/product-gallery';
 import { Separator } from '@/components/ui/separator';
 import ProductSlider from '@/components/shared/product/product-slider';
 import BrowsingHistoryList from '@/components/shared/browsing-history-list';
+import AddToBrowsingHistory from '@/components/shared/product/add-to-browsing-history';
 import AddToCart from '@/components/shared/product/add-to-cart';
 import { generateId, round2 } from '@/lib/utils';
 import RatingSummary from '@/components/shared/product/rating-summary';
@@ -51,9 +52,9 @@ export default async function ProductDetails(props: {
   });
 
   const session = await auth();
-
   return (
     <div>
+      <AddToBrowsingHistory id={product._id} category={product.category} />
       <section>
         <div className="grid grid-cols-1 md:grid-cols-5  ">
           <div className="col-span-2">
@@ -105,7 +106,6 @@ export default async function ProductDetails(props: {
             <Card>
               <CardContent className="p-4 flex flex-col  gap-4">
                 <ProductPrice price={product.price} />
-
                 {product.countInStock > 0 && product.countInStock <= 3 && (
                   <div className="text-destructive font-bold">
                     {`Only ${product.countInStock} left in stock - order soon`}
@@ -140,14 +140,12 @@ export default async function ProductDetails(props: {
           </div>
         </div>
       </section>
-
       <section className="mt-10">
         <h2 className="h2-bold mb-2" id="reviews">
           Customer Reviews
         </h2>
         <ReviewList product={product} userId={session?.user.id} />
       </section>
-
       <section className="mt-10">
         <ProductSlider
           products={relatedProducts.data}
