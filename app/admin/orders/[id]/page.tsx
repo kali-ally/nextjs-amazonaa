@@ -7,10 +7,10 @@ import OrderDetailsForm from '@/components/shared/order/order-details-form';
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Order Details',
+  title: 'Admin Order Details',
 };
 
-const OrderDetailsPage = async (props: {
+const AdminOrderDetailsPage = async (props: {
   params: Promise<{
     id: string;
   }>;
@@ -38,4 +38,4 @@ const OrderDetailsPage = async (props: {
   );
 };
 
-export default OrderDetailsPage;
+export default AdminOrderDetailsPage;
