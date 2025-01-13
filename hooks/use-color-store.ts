@@ -3,18 +3,18 @@
 // then in chatgpt:
 // PROMPT: convert this css to js object. don't convert css variable to cameCase
 
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 type ColorState = {
   availableColors: {
-    name: string;
-    root: {};
-    dark: {};
-  }[];
-  defaultColor: string;
-  userColor?: string;
-};
+    name: string
+    root: {}
+    dark: {}
+  }[]
+  defaultColor: string
+  userColor?: string
+}
 const availableColors = [
   {
     name: 'Gold',
@@ -184,36 +184,36 @@ const availableColors = [
       '--chart-5': '340 75% 55%',
     },
   },
-];
+]
 const initialState: ColorState = {
   availableColors,
   defaultColor: availableColors[0].name,
   userColor: undefined,
-};
+}
 export const colorStore = create<ColorState>()(
   persist(() => initialState, {
     name: 'colorStore',
   })
-);
+)
 
 export default function useColorStore(theme: string = 'light') {
-  const colorState = colorStore();
+  const colorState = colorStore()
   const getColor = () => {
     const userColor = colorState.availableColors.find(
       (t) => t.name === colorState.userColor
-    );
-    if (userColor) return userColor;
+    )
+    if (userColor) return userColor
     const defaultColor = colorState.availableColors.find(
       (t) => t.name === colorState.defaultColor
-    );
-    if (defaultColor) return defaultColor;
+    )
+    if (defaultColor) return defaultColor
 
-    return colorState.availableColors[0];
-  };
+    return colorState.availableColors[0]
+  }
 
-  const color = getColor();
+  const color = getColor()
   const cssColors: { [key: string]: string } =
-    theme === 'light' ? color.root : color.dark;
+    theme === 'light' ? color.root : color.dark
   return {
     availableColors,
     cssColors,
@@ -222,15 +222,15 @@ export default function useColorStore(theme: string = 'light') {
     setColor: (name: string, isUserColor?: boolean) => {
       colorStore.setState(
         isUserColor ? { userColor: name } : { defaultColor: name }
-      );
+      )
     },
     updateCssVariables: () => {
-      const color = getColor();
+      const color = getColor()
       const colors: { [key: string]: string } =
-        theme === 'light' ? color.root : color.dark;
+        theme === 'light' ? color.root : color.dark
       for (const key in colors) {
-        document.documentElement.style.setProperty(key, colors[key]);
+        document.documentElement.style.setProperty(key, colors[key])
       }
     },
-  };
+  }
 }
