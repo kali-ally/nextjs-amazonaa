@@ -1,63 +1,64 @@
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { ISettingInput } from '@/types'
-import { TrashIcon } from 'lucide-react'
-import React, { useEffect } from 'react'
-import { useFieldArray, UseFormReturn } from 'react-hook-form'
+} from '@/components/ui/select';
+import { ISettingInput } from '@/types';
+import { TrashIcon } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { useFieldArray, UseFormReturn } from 'react-hook-form';
 
 export default function CurrencyForm({
   form,
   id,
 }: {
-  form: UseFormReturn<ISettingInput>
-  id: string
+  form: UseFormReturn<ISettingInput>;
+  id: string;
 }) {
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: 'availableCurrencies',
-  })
+  });
   const {
     setValue,
     watch,
     control,
     formState: { errors },
-  } = form
+  } = form;
 
-  const availableCurrencies = watch('availableCurrencies')
-  const defaultCurrency = watch('defaultCurrency')
+  const availableCurrencies = watch('availableCurrencies');
+  const defaultCurrency = watch('defaultCurrency');
 
   useEffect(() => {
-    const validCodes = availableCurrencies.map((lang) => lang.code)
-    if (!validCodes.includes(defaultCurrency)) {
-      setValue('defaultCurrency', '')
+    if (availableCurrencies) {
+      const validCodes = availableCurrencies.map((currency) => currency.code);
+      if (!validCodes.includes(defaultCurrency)) {
+        setValue('defaultCurrency', '');
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(availableCurrencies)])
-
+  }, [JSON.stringify(availableCurrencies)]);
   return (
     <Card id={id}>
       <CardHeader>
         <CardTitle>Currencies</CardTitle>
       </CardHeader>
-      <CardContent className='space-y-4'>
-        <div className='space-y-4'>
+      <CardContent className="space-y-4">
+        <div className="space-y-4">
           {fields.map((field, index) => (
-            <div key={field.id} className='flex   gap-2'>
+            <div key={field.id} className="flex   gap-2">
               <FormField
                 control={form.control}
                 name={`availableCurrencies.${index}.name`}
@@ -66,7 +67,7 @@ export default function CurrencyForm({
                     {' '}
                     {index == 0 && <FormLabel>Name</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder='Name' />
+                      <Input {...field} placeholder="Name" />
                     </FormControl>
                     <FormMessage>
                       {errors.availableCurrencies?.[index]?.name?.message}
@@ -82,7 +83,7 @@ export default function CurrencyForm({
                   <FormItem>
                     {index == 0 && <FormLabel>Code</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder='Code' />
+                      <Input {...field} placeholder="Code" />
                     </FormControl>
                     <FormMessage>
                       {errors.availableCurrencies?.[index]?.code?.message}
@@ -97,7 +98,7 @@ export default function CurrencyForm({
                   <FormItem>
                     {index == 0 && <FormLabel>Symbol</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder='Symbol' />
+                      <Input {...field} placeholder="Symbol" />
                     </FormControl>
                     <FormMessage>
                       {errors.availableCurrencies?.[index]?.symbol?.message}
@@ -113,7 +114,7 @@ export default function CurrencyForm({
                   <FormItem>
                     {index == 0 && <FormLabel>Convert Rate</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder='Convert Rate' />
+                      <Input {...field} placeholder="Convert Rate" />
                     </FormControl>
                     <FormMessage>
                       {
@@ -127,22 +128,22 @@ export default function CurrencyForm({
               <div>
                 {index == 0 && <div>Action</div>}
                 <Button
-                  type='button'
+                  type="button"
                   disabled={fields.length === 1}
-                  variant='outline'
+                  variant="outline"
                   className={index == 0 ? 'mt-2' : ''}
                   onClick={() => {
-                    remove(index)
+                    remove(index);
                   }}
                 >
-                  <TrashIcon className='w-4 h-4' />
+                  <TrashIcon className="w-4 h-4" />
                 </Button>
               </div>
             </div>
           ))}
 
           <Button
-            type='button'
+            type="button"
             variant={'outline'}
             onClick={() =>
               append({ name: '', code: '', symbol: '', convertRate: 1 })
@@ -154,7 +155,7 @@ export default function CurrencyForm({
 
         <FormField
           control={control}
-          name='defaultCurrency'
+          name="defaultCurrency"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Default Currency</FormLabel>
@@ -164,16 +165,18 @@ export default function CurrencyForm({
                   onValueChange={(value) => field.onChange(value)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder='Select a currency' />
+                    <SelectValue placeholder="Select a currency" />
                   </SelectTrigger>
                   <SelectContent>
-                    {availableCurrencies
-                      .filter((x) => x.code)
-                      .map((lang, index) => (
-                        <SelectItem key={index} value={lang.code}>
-                          {lang.name} ({lang.code})
-                        </SelectItem>
-                      ))}
+                    {availableCurrencies &&
+                      availableCurrencies.length > 0 &&
+                      availableCurrencies
+                        .filter((x) => x.code)
+                        .map((lang, index) => (
+                          <SelectItem key={index} value={lang.code}>
+                            {lang.name} ({lang.code})
+                          </SelectItem>
+                        ))}
                   </SelectContent>
                 </Select>
               </FormControl>
@@ -183,5 +186,5 @@ export default function CurrencyForm({
         />
       </CardContent>
     </Card>
-  )
+  );
 }
