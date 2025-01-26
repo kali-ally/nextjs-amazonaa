@@ -77,24 +77,6 @@ export default function DeliveryDateForm({
               />
               <FormField
                 control={form.control}
-                name={`availableDeliveryDates.${index}.daysToDeliver`}
-                render={({ field }) => (
-                  <FormItem>
-                    {index == 0 && <FormLabel>Days</FormLabel>}
-                    <FormControl>
-                      <Input {...field} placeholder="daysToDeliver" />
-                    </FormControl>
-                    <FormMessage>
-                      {
-                        errors.availableDeliveryDates?.[index]?.daysToDeliver
-                          ?.message
-                      }
-                    </FormMessage>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
                 name={`availableDeliveryDates.${index}.shippingPrice`}
                 render={({ field }) => (
                   <FormItem>

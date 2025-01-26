@@ -1,49 +1,53 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Checkbox } from '@/components/ui/checkbox'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { COLORS, THEMES } from '@/lib/constants'
-import { ISettingInput } from '@/types'
-import React from 'react'
-import { UseFormReturn } from 'react-hook-form'
+} from '@/components/ui/select';
+import { COLORS, THEMES } from '@/lib/constants';
+import { ISettingInput } from '@/types';
+import React from 'react';
+import { UseFormReturn } from 'react-hook-form';
 
 export default function CommonForm({
   form,
   id,
 }: {
-  form: UseFormReturn<ISettingInput>
-  id: string
+  form: UseFormReturn<ISettingInput>;
+  id: string;
 }) {
-  const { control } = form
+  const { control } = form;
 
   return (
     <Card id={id}>
       <CardHeader>
         <CardTitle>Common Settings</CardTitle>
       </CardHeader>
-      <CardContent className='space-y-4'>
-        <div className='flex flex-col gap-5 md:flex-row'>
+      <CardContent className="space-y-4">
+        <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={control}
-            name='common.pageSize'
+            name="common.pageSize"
             render={({ field }) => (
-              <FormItem className='w-full'>
+              <FormItem className="w-full">
                 <FormLabel>Page Size</FormLabel>
                 <FormControl>
-                  <Input placeholder='Enter Page Size' {...field} />
+                  <Input
+                    placeholder="Enter Page Size"
+                    {...field}
+                    value={field.value || ''}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -51,14 +55,15 @@ export default function CommonForm({
           />
           <FormField
             control={control}
-            name='common.freeShippingMinPrice'
+            name="common.freeShippingMinPrice"
             render={({ field }) => (
-              <FormItem className='w-full'>
+              <FormItem className="w-full">
                 <FormLabel>Free Shipping Minimum Price</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder='Enter Free Shipping Minimum Price'
+                    placeholder="Enter Free Shipping Minimum Price"
                     {...field}
+                    value={field.value || ''}
                   />
                 </FormControl>
                 <FormMessage />
@@ -66,12 +71,12 @@ export default function CommonForm({
             )}
           />
         </div>
-        <div className='flex flex-col gap-5 md:flex-row'>
+        <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={control}
-            name='common.defaultColor'
+            name="common.defaultColor"
             render={({ field }) => (
-              <FormItem className='w-full'>
+              <FormItem className="w-full">
                 <FormLabel>Default Color</FormLabel>
                 <FormControl>
                   <Select
@@ -79,7 +84,7 @@ export default function CommonForm({
                     onValueChange={(value) => field.onChange(value)}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder='Select a color' />
+                      <SelectValue placeholder="Select a color" />
                     </SelectTrigger>
                     <SelectContent>
                       {COLORS.map((color, index) => (
@@ -96,9 +101,9 @@ export default function CommonForm({
           />
           <FormField
             control={control}
-            name='common.defaultTheme'
+            name="common.defaultTheme"
             render={({ field }) => (
-              <FormItem className='w-full'>
+              <FormItem className="w-full">
                 <FormLabel>Default Theme</FormLabel>
                 <FormControl>
                   <Select
@@ -106,7 +111,7 @@ export default function CommonForm({
                     onValueChange={(value) => field.onChange(value)}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder='Select a theme' />
+                      <SelectValue placeholder="Select a theme" />
                     </SelectTrigger>
                     <SelectContent>
                       {THEMES.map((theme, index) => (
@@ -125,12 +130,12 @@ export default function CommonForm({
         <div>
           <FormField
             control={control}
-            name='common.isMaintenanceMode'
+            name="common.isMaintenanceMode"
             render={({ field }) => (
-              <FormItem className='space-x-2 items-center'>
+              <FormItem className="space-x-2 items-center">
                 <FormControl>
                   <Checkbox
-                    checked={field.value}
+                    checked={field.value || false}
                     onCheckedChange={field.onChange}
                   />
                 </FormControl>
@@ -142,5 +147,5 @@ export default function CommonForm({
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }
