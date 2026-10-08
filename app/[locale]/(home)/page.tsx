@@ -15,20 +15,26 @@ import { getTranslations } from 'next-intl/server'
 
 export default async function HomePage() {
   const t = await getTranslations('Home')
-  const { carousels } = await getSetting()
-  const todaysDeals = await getProductsByTag({ tag: 'todays-deal' })
-  const bestSellingProducts = await getProductsByTag({ tag: 'best-seller' })
+  let carousels = []
+  let todaysDeals = []
+  let bestSellingProducts = []
+  let categories: string[] = []
+  let newArrivals = []
+  let featureds = []
+  let bestSellers = []
 
-  const categories = (await getAllCategories()).slice(0, 4)
-  const newArrivals = await getProductsForCard({
-    tag: 'new-arrival',
-  })
-  const featureds = await getProductsForCard({
-    tag: 'featured',
-  })
-  const bestSellers = await getProductsForCard({
-    tag: 'best-seller',
-  })
+  try {
+    const setting = await getSetting()
+    carousels = setting.carousels
+    todaysDeals = await getProductsByTag({ tag: 'todays-deal' })
+    bestSellingProducts = await getProductsByTag({ tag: 'best-seller' })
+    categories = (await getAllCategories()).slice(0, 4)
+    newArrivals = await getProductsForCard({ tag: 'new-arrival' })
+    featureds = await getProductsForCard({ tag: 'featured' })
+    bestSellers = await getProductsForCard({ tag: 'best-seller' })
+  } catch (error) {
+    console.error('[v0] Homepage data unavailable:', error)
+  }
   const cards = [
     {
       title: t('Categories to explore'),
