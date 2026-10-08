@@ -8,6 +8,7 @@ import { routing } from '@/i18n/routing'
 import { notFound } from 'next/navigation'
 import { getSetting } from '@/lib/actions/setting.actions'
 import { cookies } from 'next/headers'
+import data from '@/lib/data'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -20,15 +21,14 @@ const geistMono = Geist_Mono({
 })
 
 export async function generateMetadata() {
-  const {
-    site: { slogan, name, description, url },
-  } = await getSetting()
+  const setting = await getSetting().catch(() => data.settings[0])
+  const { slogan, name, description, url } = setting.site
   return {
     title: {
       template: `%s | ${name}`,
       default: `${name}. ${slogan}`,
     },
-    description: description,
+    description,
     metadataBase: new URL(url),
   }
 }
@@ -40,7 +40,7 @@ export default async function AppLayout({
   params: { locale: string }
   children: React.ReactNode
 }) {
-  const setting = await getSetting()
+  const setting = await getSetting().catch(() => data.settings[0])
   const currencyCookie = (await cookies()).get('currency')
   const currency = currencyCookie ? currencyCookie.value : 'USD'
 

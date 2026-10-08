@@ -121,11 +121,13 @@ export async function getAllProductsForAdmin({
 }
 
 export async function getAllCategories() {
-  await connectToDatabase()
-  const categories = await Product.find({ isPublished: true }).distinct(
-    'category'
-  )
-  return categories
+  try {
+    await connectToDatabase()
+    return await Product.find({ isPublished: true }).distinct('category')
+  } catch (error) {
+    console.error('[v0] Categories database unavailable:', error)
+    return []
+  }
 }
 export async function getProductsForCard({
   tag,
