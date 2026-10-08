@@ -136,22 +136,27 @@ export async function getProductsForCard({
   tag: string
   limit?: number
 }) {
-  await connectToDatabase()
-  const products = await Product.find(
-    { tags: { $in: [tag] }, isPublished: true },
-    {
-      name: 1,
-      href: { $concat: ['/product/', '$slug'] },
-      image: { $arrayElemAt: ['$images', 0] },
-    }
-  )
-    .sort({ createdAt: 'desc' })
-    .limit(limit)
-  return JSON.parse(JSON.stringify(products)) as {
-    name: string
-    href: string
-    image: string
-  }[]
+  try {
+    await connectToDatabase()
+    const products = await Product.find(
+      { tags: { $in: [tag] }, isPublished: true },
+      {
+        name: 1,
+        href: { $concat: ['/product/', '$slug'] },
+        image: { $arrayElemAt: ['$images', 0] },
+      }
+    )
+      .sort({ createdAt: 'desc' })
+      .limit(limit)
+    return JSON.parse(JSON.stringify(products)) as {
+      name: string
+      href: string
+      image: string
+    }[]
+  } catch (error) {
+    console.error('[v0] Product cards database unavailable:', error)
+    return []
+  }
 }
 // GET PRODUCTS BY TAG
 export async function getProductsByTag({
@@ -161,14 +166,19 @@ export async function getProductsByTag({
   tag: string
   limit?: number
 }) {
-  await connectToDatabase()
-  const products = await Product.find({
-    tags: { $in: [tag] },
-    isPublished: true,
-  })
-    .sort({ createdAt: 'desc' })
-    .limit(limit)
-  return JSON.parse(JSON.stringify(products)) as IProduct[]
+  try {
+    await connectToDatabase()
+    const products = await Product.find({
+      tags: { $in: [tag] },
+      isPublished: true,
+    })
+      .sort({ createdAt: 'desc' })
+      .limit(limit)
+    return JSON.parse(JSON.stringify(products)) as IProduct[]
+  } catch (error) {
+    console.error('[v0] Tagged products database unavailable:', error)
+    return []
+  }
 }
 
 // GET ONE PRODUCT BY SLUG
